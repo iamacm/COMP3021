@@ -1,5 +1,6 @@
 package blog_system;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import blog_system.User;
 
@@ -62,6 +63,9 @@ public class Blog {
 		}
 	}
 	
+	public void setPosts(ArrayList<Post> allPosts) {
+		this.allPosts = allPosts;
+	}
 	@Override
 	public String toString() {
 		String output = "";
@@ -84,5 +88,18 @@ public class Blog {
 	@Override
 	public int hashCode() {
 		return 0;
+	}
+	
+	public void search(int month, String someone) {
+		Calendar cal = Calendar.getInstance();
+		for (Post p: this.allPosts) {
+			cal.setTime(p.getDate());
+			int postMonth = cal.get(Calendar.MONTH) + 1;
+			if (postMonth == month) {
+				if (p.getContent().indexOf("@" + someone) != -1) {
+					System.out.println(p);
+				}
+			}
+		}
 	}
 }

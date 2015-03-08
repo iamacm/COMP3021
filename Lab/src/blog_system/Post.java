@@ -3,7 +3,7 @@ import java.util.Date;
 
 import blog_system.Post;
 
-public class Post {
+public class Post implements Comparable<Post>{
 	private Date date;
 	private String content;
 	
@@ -37,6 +37,10 @@ public class Post {
 	public void setContent(String content) {
 		// TODO
 		this.content = content;
+	}
+	
+	public Date getDate() {
+		return this.date;
 	}
 	
 	@Override
@@ -75,6 +79,11 @@ public class Post {
 		hashCode += 79 * content.hashCode();
 		
 		return hashCode;
+	}
+	
+	@Override
+	public int compareTo(Post p) {
+		return this.getDate().compareTo(p.getDate());
 	}
 	
 	public boolean contains(String str) {

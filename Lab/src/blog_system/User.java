@@ -1,6 +1,6 @@
 package blog_system;
 
-public class User {
+public class User implements Comparable<User>{
 	private int id;
 	private String username;
 	private String email;
@@ -39,12 +39,28 @@ public class User {
 	}
 	
 	@Override
+	public String toString() {
+		return "User [userId="+this.get_id()+", userName="+this.get_username()+", userEmail="+this.get_email()+"]";
+	}
+	
+	@Override
 	public int hashCode() {
 		int hashCode = 7;
 		hashCode += this.id * 17;
 		hashCode += this.username.hashCode() * 31;
 		hashCode += this.email.hashCode() * 59;
 		return hashCode;
+	}
+	
+	@Override
+	public int compareTo(User u) {
+		if (this.get_id() > u.get_id()) {
+			return 1;
+		} else if (this.get_id() < u.get_id()) {
+			return -1;
+		} else {
+			return 0;
+		}
 	}
 	
 }
