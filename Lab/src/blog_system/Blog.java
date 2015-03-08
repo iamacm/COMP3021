@@ -21,7 +21,7 @@ public class Blog {
 	 * @param user
 	 */
 	public void setUser(User user) {
-		
+		this.user = user;
 	}
 	
 	/**
@@ -37,7 +37,7 @@ public class Blog {
 	 * @param p
 	 */
 	public void post(Post p) {
-		allPosts.add(p);
+		this.allPosts.add(p);
 		System.out.println("A new post: ");
 		System.out.println(p);
 	}

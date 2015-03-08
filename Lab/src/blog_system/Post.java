@@ -18,6 +18,11 @@ public class Post {
 		this.content = content;
 	}
 	
+	public Post(String content) {
+		this.date = new Date();
+		this.content = content;
+	}
+	
 	/**
 	 * @return the content of the blog
 	 */
@@ -51,33 +56,23 @@ public class Post {
 	 * Check if two objects are equal
 	 */
 	public boolean equals(Object o) {
-		// TODO
-		boolean ans = true;
 		if (this == o) {
 			return true;
-		}
-		if (o == null) {
+		} else if (o == null) {
+			return false;
+		} else if (o.getClass() == this.getClass()) {
+			Post post = (Post) o;
+			return post.getContent().equals(this.getContent()) && post.date.equals(this.date);
+		} else {
 			return false;
 		}
-		
-		if (o.getClass() == this.getClass()) {
-			Post post = (Post) o;
-			if (!post.getContent().equals(this.getContent())) {
-				ans = false;
-			}
-			if (!post.date.equals(this.date)) {
-				ans = false;
-			}
-			
-		}
-		return ans;
 	}
 	
 	@Override
 	public int hashCode() {
-		int hashCode = 0;
-		date.hashCode();
-		content.hashCode();
+		int hashCode = 37;
+		hashCode += 11 * date.hashCode();
+		hashCode += 79 * content.hashCode();
 		
 		return hashCode;
 	}

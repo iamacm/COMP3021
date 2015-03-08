@@ -49,11 +49,13 @@ public class Main {
 		Blog myblog = new Blog(user);
 		String prompt = null;
 		while (!(prompt = main.getInput()).equals("exit")) {
+			String[] inputs = prompt.split(" ");
+			
 			if (prompt.startsWith("list")) {
 				myblog.list();
 			} else if (prompt.startsWith("post")) {
 				String content = prompt.substring(5);
-				Post post = new Post(date, content);
+				Post post = new Post(content);
 				myblog.post(post);
 			} else if (prompt.startsWith("delete")) {
 				String index_str = prompt.substring(7);

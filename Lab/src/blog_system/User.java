@@ -24,4 +24,27 @@ public class User {
 		return this.email;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		} else if (o == null) {
+			return false;
+		} else if (o.getClass() == this.getClass()) {
+			User u = (User) o;
+			return this.id == u.get_id() && this.username.equals(u.get_username()) && this.email.equals(u.get_email());
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		int hashCode = 7;
+		hashCode += this.id * 17;
+		hashCode += this.username.hashCode() * 31;
+		hashCode += this.email.hashCode() * 59;
+		return hashCode;
+	}
+	
 }
