@@ -19,7 +19,7 @@ public class FriendsPost extends Post{
 	@Override
 	public String toString() {
 		String output;
-		output = "User [userId="+friend.get_id()+", userName="+friend.get_username()+", userEmail="+friend.get_email()+"]\n";
+		output = "User [userId="+friend.get_id()+", userName="+friend.getUserName()+", userEmail="+friend.get_email()+"]\n";
 		output += super.toString();
 		return output;
 	}	

@@ -1,10 +1,12 @@
 package blog_system;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import blog_system.User;
 
-public class Blog {
+
+public class Blog implements Serializable {
 	private User user;
 	private ArrayList<Post> allPosts;
 	
@@ -100,6 +102,30 @@ public class Blog {
 					System.out.println(p);
 				}
 			}
+		}
+	}
+	
+	public void save(String filepath) {
+		try {
+			FileOutputStream fout = new FileOutputStream(filepath);
+			ObjectOutputStream oout = new ObjectOutputStream(fout);
+			
+			oout.writeObject(this);
+			oout.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public void load(String filepath) {
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filepath));
+			Blog tmp_blog = (Blog) ois.readObject();
+			this.user = tmp_blog.user;
+			this.allPosts = tmp_blog.allPosts;
+			
+		} catch (Exception ex) {
+			System.out.println("Wait! There is something wrong. I cannot find the file..");
 		}
 	}
 }

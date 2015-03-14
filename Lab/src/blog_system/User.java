@@ -1,6 +1,8 @@
 package blog_system;
 
-public class User implements Comparable<User>{
+import java.io.Serializable;
+
+public class User implements Comparable<User>, Serializable {
 	private int id;
 	private String username;
 	private String email;
@@ -16,7 +18,7 @@ public class User implements Comparable<User>{
 		return this.id;
 	}
 	
-	public String get_username() {
+	public String getUserName() {
 		return this.username;
 	}
 	
@@ -32,7 +34,7 @@ public class User implements Comparable<User>{
 			return false;
 		} else if (o.getClass() == this.getClass()) {
 			User u = (User) o;
-			return this.id == u.get_id() && this.username.equals(u.get_username()) && this.email.equals(u.get_email());
+			return this.id == u.get_id() && this.username.equals(u.getUserName()) && this.email.equals(u.get_email());
 		} else {
 			return false;
 		}
@@ -40,7 +42,7 @@ public class User implements Comparable<User>{
 	
 	@Override
 	public String toString() {
-		return "User [userId="+this.get_id()+", userName="+this.get_username()+", userEmail="+this.get_email()+"]";
+		return "User [userId="+this.get_id()+", userName="+this.getUserName()+", userEmail="+this.get_email()+"]";
 	}
 	
 	@Override

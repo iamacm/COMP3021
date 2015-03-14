@@ -1,9 +1,10 @@
 package blog_system;
+import java.io.Serializable;
 import java.util.Date;
 
 import blog_system.Post;
 
-public class Post implements Comparable<Post>{
+public class Post implements Comparable<Post>, Serializable{
 	private Date date;
 	private String content;
 	
