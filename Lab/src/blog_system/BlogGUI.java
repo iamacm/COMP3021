@@ -20,26 +20,32 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
-public class BlogGUI implements ActionListener {
+public class BlogGUI {
 	private JFrame mainFrame;
 	private JPanel subFrame;
 	
 	private JLabel textTips;
 	private JTextArea textArea;
 	private final int textAreaLimit = 140;
-	private String previous_text = "";
 	private JPanel buttonsArea;
 	private JButton refreshButton;
 	private JButton postButton;
-	private JTextField postsArea;
+	private JTextArea postsArea;
+	private Blog myBlog;
+	private String blogFile = "blog.txt";
 	
 	public BlogGUI() {
-		
+		// Init blog
+		myBlog = new Blog(null);
 	}
 	
 	public BlogGUI setWindow() {
+		return this.setWindow("Blog");
+	}
+	
+	public BlogGUI setWindow(String title) {
 		/** MainFrame config begins **/
-		this.mainFrame = new JFrame("Blog demo");
+		this.mainFrame = new JFrame(title);
 		this.mainFrame.setSize(400, 400);
 		//this.mainFrame.setResizable(false);
 		this.mainFrame.setLayout(new GridLayout(2, 1));  // 2 rows * 1 column
@@ -76,7 +82,7 @@ public class BlogGUI implements ActionListener {
 		this.refreshButton = new JButton("Refresh");
 		this.refreshButton.setBackground(new Color(180, 255, 180));
 		this.refreshButton.setVisible(true);
-		this.refreshButton.addActionListener(this);
+		this.refreshButton.addActionListener(new refreshListener());
 		this.buttonsArea.add(this.refreshButton);
 		/** PostButton config ends **/
 		
@@ -84,7 +90,7 @@ public class BlogGUI implements ActionListener {
 		this.postButton = new JButton("Post");
 		this.postButton.setBackground(new Color(255, 180, 255));
 		this.postButton.setVisible(true);
-		this.postButton.addActionListener(this);
+		this.postButton.addActionListener(new postListener());
 		this.buttonsArea.add(this.postButton);
 		/** RefreshButton config ends **/
 		
@@ -98,13 +104,14 @@ public class BlogGUI implements ActionListener {
 		/** SubFrame config ends **/
 		
 		/** PostsArea config begins **/
-		this.postsArea = new JTextField("test");
+		this.postsArea = new JTextArea("Post Area");
 		this.postsArea.setEditable(false);	// Not editable
-		this.postsArea.setHorizontalAlignment(JTextField.CENTER);
+		//this.postsArea.setHorizontalAlignment(JTextField.CENTER);
 		this.postsArea.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createEmptyBorder(0,5,5,5), 
 				BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)
 				));
+		this.postsArea.setLineWrap(true);
 		this.postsArea.setVisible(true);
 		this.mainFrame.add(this.postsArea);
 		/** PostsArea config ends **/
@@ -125,10 +132,6 @@ public class BlogGUI implements ActionListener {
 		textAreaCheck();
 	}
 	
-	private void post() {
-		String content = this.textArea.getText();
-		this.postsArea.setText("New post: " + content);
-	}
 	
 	private int textAreaCheck() {
 		int char_available = this.textAreaLimit - this.textArea.getText().length();
@@ -136,19 +139,17 @@ public class BlogGUI implements ActionListener {
 		if (char_available > 0) {
 			this.textTips.setText("You can still input " + char_available + " characters.");
 			this.textTips.setForeground(new Color((int) ((1-char_available_percentage) * 225), (int) (char_available_percentage * 160), 0));
-			this.previous_text = this.textArea.getText();
 		} else {
 			this.textTips.setText("Text full!");
 			this.textTips.setForeground(new Color(225, 0, 0));
-			if (char_available == 0) {
-				this.previous_text = this.textArea.getText();
-			}
 			//this.textArea.setEditable(false);
-			this.textArea.setText(this.previous_text);
+			//this.textArea.setText(this.previous_text);
+			this.textArea.setText(this.textArea.getText().substring(0, this.textAreaLimit));
 		}
 		return char_available;
 	}
 	
+	/*
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -158,17 +159,41 @@ public class BlogGUI implements ActionListener {
 			this.post();
 		}
 	}
+	*/
+	
+	private class postListener implements ActionListener {
 
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			String content = textArea.getText();
+			if (content.length() <= textAreaLimit) {
+				postsArea.setText("New post: " + content);
+				myBlog.post(new Post(content));
+				myBlog.save(blogFile);
+			}
+			
+		}
+		
+	}
+	
+	private class refreshListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			myBlog.load(blogFile);
+			postsArea.setText(myBlog.toString());
+		}
+		
+	}
+	
 	private class textAreaKeyListener implements KeyListener {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
 			// TODO Auto-generated method stub
 			textAreaCheck(); 
-			if (e.isControlDown() && e.getKeyChar() == '\n') {
-				// Control-Enter to post
-				post();
-			}
 		}
 
 		@Override
