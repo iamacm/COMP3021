@@ -161,17 +161,21 @@ public class BlogGUI {
 	}
 	*/
 	
+	public void post(String content) 
+	{
+		if (content.length() <= textAreaLimit) {
+			postsArea.setText("New post: " + content);
+			myBlog.post(new Post(content));
+			myBlog.save(blogFile);
+		}
+	}
+	
 	private class postListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			String content = textArea.getText();
-			if (content.length() <= textAreaLimit) {
-				postsArea.setText("New post: " + content);
-				myBlog.post(new Post(content));
-				myBlog.save(blogFile);
-			}
+			post(textArea.getText());
 			
 		}
 		
