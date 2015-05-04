@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Network {
-	public static final String IP = "192.168.0.100";
+	public static final String IP = "127.0.0.1";
 	public static final int PORT = 3021;
 	
 	public static class BlogServer {
